@@ -20,42 +20,85 @@
 ```bash
 pip install snorq
 ```
-🛠 Usage
+## 🛠 Usage
 ```
 snorq --strict true
 ```
-CLI Options
+### CLI Options
 ```
 --strict: Prevents duplicate URLs from being enqueued (default: true)
 ```
-🧾 Configuration: snorq.json
+### 🧾 Configuration: snorq.json
 
-This file defines what URLs to sniff and how they should behave.
-```
-[
-  {
-    "url": "https://josef.digital",
-    "interval": 10,
-    "max_retries": 3,
-    "expected": {
-      "status": 200,
-      "body": {
-        "in": ["josef"]
-      },
-      "headers": {
-        "content_type": "html/text"
-      }
+The snorq.json file defines which domains Snorq will monitor ("sniff"), how frequently, and what conditions to check for. It also configures alerting options such as email notifications.
+### 🔧 Example Configuration
+```bash
+{
+  "alerts": {
+    "email": {
+      "smtp_server": "smtppro.zoho.eu",
+      "port": 587,
+      "username": "<EMAIL_ADDRESS>",
+      "password": "<EMAIL_PASSWORD>",
+      "from": "<SENDER_EMAIL>",
+      "to": ["<RECIPIENT_EMAIL_1>", "<RECIPIENT_EMAIL_2>"]
     }
   },
-  ...
-]
+  "domains": [
+    {
+      "url": "https://yahoo.com",
+      "interval": 5,
+      "expected": {
+        "status": 200,
+        "body": {
+          "in": ["josef"]
+        },
+        "headers": {
+          "content_type": "html/text"
+        }
+      }
+    }
+  ]
+}
 ```
-🧪 Development
+## 📝 Field Breakdown
+
+### `alerts.email`
+
+`smtp_server`: SMTP server address (e.g. smtppro.zoho.eu)
+
+`port`: SMTP port (typically 587 for TLS)
+
+`username`: Login username for the SMTP server
+
+`password`: SMTP password or app-specific password
+
+`from`: The sender address (displayed as the "from" in emails)
+
+`to`: List of recipient email addresses for alerts
+
+### `domains`
+
+A list of domain targets to monitor.
+
+Each entry supports:
+
+`url`: The full URL to sniff
+
+`interval`: How often to sniff (in seconds)
+
+`expected.status`: Expected HTTP status code (e.g. 200)
+
+`expected.body.in`: List of strings that should be present in the response body
+
+`expected.headers.content_type`: Expected Content-Type header
+
+## 🧪 Development
 ```
 pipenv shell
 pipenv install
 snorq --strict true
 ```
-📄 License
+## 📄 License
 
 MIT License
