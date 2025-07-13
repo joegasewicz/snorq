@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://x.com",
+    "interval": 5,
+    "expected": {
+      "status": 200,
+      "body": {
+        "in": [
+          "josef"
+        ]
+      },
+      "headers": {
+        "content_type": "html/text"
+      }
+    }
+  },
+   {
+    "url": "https://yahoo.com",
+    "interval": 5,
+    "expected": {
+      "status": 200,
+      "body": {
+        "in": [
+          "josef"
+        ]
+      },
+      "headers": {
+        "content_type": "html/text"
+      }
+    }
+  }
+]
