@@ -8,15 +8,16 @@ logger = get_logger()
 
 async def consumer(queue: asyncio.Queue):
     while True:
-        url_data = await queue.get()
+        data = await queue.get()
         try:
-            async with asyncio.timeout(10):
-                asyncio.create_task(sniff(url_data))
+            async with asyncio.timeout(data["interval"]):
+                logger.debug(f"Sniffing {data['url']} every {data['interval']}s")
+                asyncio.create_task(sniff(data))
         except asyncio.TimeoutError:
             # Task automatically gets cancelled.
-            logger.error(f"Timeout Error sniffing {url_data['url']}")
+            logger.error(f"Timeout Error sniffing {data['url']}")
         except Exception as e:
-            logger.error(f"Error sniffing {url_data['url']}: {e}")
+            logger.error(f"Error sniffing {data['url']}: {e}")
         finally:
             logger.debug("Task completed")
             queue.task_done()
