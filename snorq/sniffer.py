@@ -2,6 +2,7 @@ import asyncio
 import aiohttp
 
 from snorq.logging import get_logger
+from snorq.alerts import Alert
 
 
 logger = get_logger()
@@ -20,13 +21,18 @@ async def fetch(url_data: dict):
             return data
 
 
-async def sniff(url_data: dict):
-    if "interval" in url_data:
-        interval = url_data["interval"]
-        while True:
-            result = await fetch(url_data)
-            logger.debug(f"Successfully sniffed {url_data['url']} - Status: {result['status']}")
-            await asyncio.sleep(interval)
-    else:
-        result = await fetch(url_data)
-        logger.debug(f"Successfully sniffed {url_data['url']} - Status: {result['status']}")
+async def sniff(*, data: dict, alert: Alert):
+    while True:
+        interval = data["interval"]
+        result = await fetch(data)
+        # Validate against expected config here & send an email if there's any issues.
+        exp_status = data["expected"]["status"]
+        if result["status"] != exp_status:
+            logger.error(f"Error sniffing {data['url']} with Status: {result['status']}")
+            asyncio.create_task(alert.send_email(
+                subject=f"Snorq - Sniffing Error",
+                content=f"Snorq detected an error when matching the status code {exp_status} with the response status - {result['status']}.",
+            ))
+        else:
+            logger.debug(f"Successfully sniffed {data['url']} - Status: {result['status']}")
+        await asyncio.sleep(interval)

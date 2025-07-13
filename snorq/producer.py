@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 
 from snorq.exceptions import DuplicateURLError, DataValidationError
 from snorq.schemas import DataSchema
+from snorq.config import DataType
 
 
 class Producer:
@@ -22,7 +23,7 @@ class Producer:
         validate_data(): Validates the data against the DataSchema.
         enqueue(): Puts validated data into the queue, enforcing duplicate checks if strict mode is enabled.
     """
-    data: list[dict]
+    data: DataType
 
     queue: asyncio.Queue
 
@@ -34,7 +35,7 @@ class Producer:
         self,
         *,
         queue: asyncio.Queue,
-        data: list[dict],
+        data: DataType,
         strict: bool = True,
     ):
         self.data = data
@@ -50,7 +51,7 @@ class Producer:
 
         :raises DuplicateURLError: If a duplicate URL is encountered in strict mode.
         """
-        for data in self.data:
+        for data in self.data["domains"]:
             if not self.strict or data["url"] not in self._seen_urls:
                 self._seen_urls.add(data["url"])
                 await  self.queue.put(data)
@@ -66,7 +67,7 @@ class Producer:
         :raises DataValidationError: If the provided data does not match the schema.
         """
         try:
-            validated = DataSchema(many=True).load(self.data)
+            validated = DataSchema().load(self.data)
             logging.debug(f"Successfully validated data: {validated}")
         except ValidationError as err:
             logging.error(f"Data validation error: {err}")

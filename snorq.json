@@ -1,20 +1,16 @@
-[
-  {
-    "url": "https://x.com",
-    "interval": 5,
-    "expected": {
-      "status": 200,
-      "body": {
-        "in": [
-          "josef"
-        ]
-      },
-      "headers": {
-        "content_type": "html/text"
-      }
+{
+  "alerts": {
+    "email" : {
+      "smtp_server": "smtppro.zoho.eu",
+      "port": 587,
+      "username": "contact@josef.digital",
+      "password": "rwmp1N7SCv3y",
+      "from": "contact@josef.digital",
+      "to": ["joegasewicz@gmail.com"]
     }
   },
-   {
+  "domains": [
+  {
     "url": "https://yahoo.com",
     "interval": 5,
     "expected": {
@@ -30,3 +26,4 @@
     }
   }
 ]
+}
