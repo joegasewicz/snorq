@@ -23,6 +23,7 @@ async def snorq(*, strict: bool):
         data=config.data,
         strict=config.strict,
     )
+    producer.validate_data()
     await producer.enqueue()
     # Create Consumers
     await consumer(queue)
