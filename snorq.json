@@ -3,10 +3,10 @@
     "email" : {
       "smtp_server": "smtppro.zoho.eu",
       "port": 587,
-      "username": "contact@josef.digital",
-      "password": "rwmp1N7SCv3y",
-      "from": "contact@josef.digital",
-      "to": ["joegasewicz@gmail.com"]
+      "username": "<EMAIL>",
+      "password": "<PASSWORD>",
+      "from": "<FROM_EMAIL>",
+      "to": ["<TO_EMAIL>"]
     }
   },
   "domains": [

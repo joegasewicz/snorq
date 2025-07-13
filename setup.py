@@ -2,13 +2,16 @@ from setuptools import setup, find_packages
 
 setup(
     name="snorq",
-    version="0.1.0",
+    version="0.2.0",
     description="Async URL sniffer and monitor",
-    author="Your Name",
+    author="Joe Gasewicz",
+    author_email="contact@josef.digital",
     packages=find_packages(),
     install_requires=[
         "aiohttp>=3.8.0",
         "colorlog>=6.7.0",
+        "aiosmtplib>=4.0.1",
+        "marshmallow>=4.0.0"
     ],
     entry_points={
         "console_scripts": [
