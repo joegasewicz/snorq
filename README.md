@@ -12,6 +12,7 @@
 - Duplicate URL prevention (`--strict`)
 - Retry support with `max_retries`
 - Logging with colorized output
+- Email alerts via SMTP (async, using aiosmtplib)
 
 ---
 
