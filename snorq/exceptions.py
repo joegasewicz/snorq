@@ -1,0 +1,2 @@
+class DuplicateURLError(Exception):
+    pass

@@ -10,6 +10,7 @@ colorlog = "*"
 setuptools = "*"
 build = "*"
 twine = "*"
+click = "*"
 
 [dev-packages]
 pytest = "*"
