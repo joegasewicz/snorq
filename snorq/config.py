@@ -6,9 +6,11 @@ class Config:
 
     path: Path
     _data: list[dict] = None
+    strict: bool
 
-    def __init__(self, path: str = "snorq.json"):
+    def __init__(self, *, path: str = "snorq.json", strict: bool = True):
         self.path = Path(path)
+        self.strict = strict
 
     def load_config(self):
         if not self.path.exists():
