@@ -4,3 +4,11 @@ class DuplicateURLError(Exception):
 
 class DataValidationError(Exception):
     pass
+
+
+class AlertEmailError(Exception):
+    pass
+
+
+class ConfigEmailError(Exception):
+    pass

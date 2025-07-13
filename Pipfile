@@ -12,6 +12,7 @@ build = "*"
 twine = "*"
 click = "*"
 marshmallow = "*"
+aiosmtplib = "*"
 
 [dev-packages]
 pytest = "*"

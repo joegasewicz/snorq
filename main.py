@@ -3,17 +3,18 @@ import asyncio
 import click
 
 from snorq.logging import get_logger
-from snorq.consumer import consumer
+from snorq.consumer import Consumer
 from snorq.producer import Producer
 from snorq.config import Config
+from snorq.alerts import Alert, Emailer
 
 
 logger = get_logger()
 
-
 async def snorq(*, strict: bool):
     config = Config(strict=strict)
     config.load_config()
+    config.check_intervals()
     logger.debug(f"Successfully loaded config: {config.data}")
     # Create the queue
     queue = asyncio.Queue()
@@ -26,7 +27,10 @@ async def snorq(*, strict: bool):
     producer.validate_data()
     await producer.enqueue()
     # Create Consumers
-    await consumer(queue)
+    emailer = Emailer(config=config)
+    alert = Alert(emailer=emailer)
+    consumer = Consumer(queue=queue, alert=alert)
+    await consumer.run()
 
 
 @click.command()
